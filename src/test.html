@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sample arcs example</title>
+</head>
+<body>
+    <canvas id="DemoCanvas" width="500" height="600"></canvas>
+    <script>
+        var canvas = document.getElementById('DemoCanvas');
+        const startPoint = {x: 10, y: 10};
+        let movement = 0;
+        let angle = Math.PI;
+        let xMove = 0;
+        let yMove = 0;
+        console.log(angle);
+        if (canvas.getContext) {
+            var ctx = canvas.getContext('2d');
+            ctx.strokeStyle = 'red'; 
+            ctx.lineWidth = 5;  
+            
+           // ctx.moveTo(startPoint.x,startPoint.y);  
+            //ctx.closePath();  
+        }  
+        window.setInterval(() => {
+            movement++;
+            //handleAddCurvePoint(ctx,movement,angle);
+            
+        },100);
+        const handleAddCurvePoint = () => {
+            ctx.beginPath();
+            ctx.quadraticCurveTo(xMove-5,yMove-5,xMove,yMove);
+            ctx.stroke();
+            ctx.closePath();
+            
+        }
+        document.addEventListener('keydown', (e) =>{
+            if(e.code === "KeyA"){
+                console.log("A");
+                handleAddCurvePoint();
+                xMove--;
+            }
+            else if (e.code === "KeyD") {
+                console.log("D");
+                handleAddCurvePoint();
+                xMove++;
+            }
+            else if (e.code === "KeyW") {
+                console.log("D");
+                handleAddCurvePoint();
+                yMove--;
+            }
+            else if (e.code === "KeyS") {
+                handleAddCurvePoint();
+                console.log("D");
+                yMove++;
+            }
+        });
+    </script>
+</body> 
+</html>
