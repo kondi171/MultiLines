@@ -15,8 +15,18 @@
   }
 }
 
-canvas.mainGame {
-  @include boardDesign($width, $height + 25px);
+.wrapper {
+  @include boardDesign($width, $height);
+  position: relative;
+}
+.redPlayer,
+.greenPlayer,
+.bluePlayer,
+.yellowPlayer {
+  stroke-linecap: round;
+  position: absolute;
+  top: -5px;
+  left: -5px;
 }
 
 aside {
@@ -60,7 +70,7 @@ aside {
 ol {
   margin: 2vw;
   li {
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     &:nth-child(1) {
       color: $FirstPlayer;
     }
