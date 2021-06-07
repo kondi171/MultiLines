@@ -1,0 +1,179 @@
+.localGame {
+  button {
+    position: absolute;
+    bottom: 10%;
+    left: 25%;
+    right: 25%;
+    width: 50%;
+    display: inline-block;
+    background-color: transparent;
+    border: none;
+    padding: 15px 30px;
+    color: $thirdPlayer;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    text-decoration: none;
+    font-size: 24px;
+    overflow: hidden;
+    transition: 0.2s;
+  }
+
+  button:hover {
+    cursor: pointer;
+    color: darken($thirdPlayer, 10%);
+    background: $thirdPlayer;
+    box-shadow: 0 0 10px $thirdPlayer, 0 0 40px $thirdPlayer,
+      0 0 80px $thirdPlayer;
+    transition-delay: 1s;
+  }
+
+  button span {
+    position: absolute;
+    display: block;
+  }
+
+  button span:nth-child(1) {
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, $thirdPlayer);
+  }
+
+  button:hover span:nth-child(1) {
+    left: 100%;
+    transition: 1s;
+  }
+
+  button span:nth-child(3) {
+    bottom: 0;
+    right: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(270deg, transparent, $thirdPlayer);
+  }
+
+  button:hover span:nth-child(3) {
+    right: 100%;
+    transition: 1s;
+    transition-delay: 0.5s;
+  }
+
+  button span:nth-child(2) {
+    top: -100%;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, $thirdPlayer);
+  }
+
+  button:hover span:nth-child(2) {
+    top: 100%;
+    transition: 1s;
+    transition-delay: 0.25s;
+  }
+
+  button span:nth-child(4) {
+    bottom: -100%;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(360deg, transparent, $thirdPlayer);
+  }
+
+  button:hover span:nth-child(4) {
+    bottom: 100%;
+    transition: 1s;
+    transition-delay: 0.75s;
+  }
+}
+
+.multiGame {
+  button {
+    position: absolute;
+    bottom: 10%;
+    left: 25%;
+    right: 25%;
+    width: 50%;
+    display: inline-block;
+    background-color: transparent;
+    border: none;
+    padding: 15px 30px;
+    color: $fourthPlayer;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    text-decoration: none;
+    font-size: 24px;
+    overflow: hidden;
+    transition: 0.2s;
+  }
+
+  button:hover {
+    cursor: pointer;
+    color: darken($fourthPlayer, 10%);
+    background: $fourthPlayer;
+    box-shadow: 0 0 10px $fourthPlayer, 0 0 40px $fourthPlayer,
+      0 0 80px $fourthPlayer;
+    transition-delay: 1s;
+  }
+
+  button span {
+    position: absolute;
+    display: block;
+  }
+
+  button span:nth-child(1) {
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, $fourthPlayer);
+  }
+
+  button:hover span:nth-child(1) {
+    left: 100%;
+    transition: 1s;
+  }
+
+  button span:nth-child(3) {
+    bottom: 0;
+    right: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(270deg, transparent, $fourthPlayer);
+  }
+
+  button:hover span:nth-child(3) {
+    right: 100%;
+    transition: 1s;
+    transition-delay: 0.5s;
+  }
+
+  button span:nth-child(2) {
+    top: -100%;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, $fourthPlayer);
+  }
+
+  button:hover span:nth-child(2) {
+    top: 100%;
+    transition: 1s;
+    transition-delay: 0.25s;
+  }
+
+  button span:nth-child(4) {
+    bottom: -100%;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(360deg, transparent, $fourthPlayer);
+  }
+
+  button:hover span:nth-child(4) {
+    bottom: 100%;
+    transition: 1s;
+    transition-delay: 0.75s;
+  }
+}

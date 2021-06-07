@@ -1,0 +1,62 @@
+aside {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  .scores {
+    @include boardDesign(200px, $height / 2);
+    margin: 3px;
+  }
+}
+ol {
+  margin: 2vw;
+  li {
+    font-size: 1.1rem;
+    &:nth-child(1) {
+      color: $firstPlayer;
+    }
+    &:nth-child(2) {
+      color: $secondPlayer;
+    }
+    &:nth-child(3) {
+      color: $thirdPlayer;
+    }
+    &:nth-child(4) {
+      color: $fourthPlayer;
+    }
+    span {
+      width: 100%;
+      display: block;
+      & + span {
+        text-align: center;
+      }
+    }
+  }
+}
+.roundInfo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  height: $height - 72px;
+  & div {
+    color: $fontColor;
+    font-size: 36px;
+    span {
+      display: block;
+      text-align: center;
+    }
+  }
+  .red {
+    color: $firstPlayer;
+  }
+  .green {
+    color: $secondPlayer;
+  }
+  .blue {
+    color: $thirdPlayer;
+  }
+  .yellow {
+    color: $fourthPlayer;
+  }
+}

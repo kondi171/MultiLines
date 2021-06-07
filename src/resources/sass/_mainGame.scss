@@ -1,5 +1,6 @@
 .mainHeader {
   @include headerDesign(2.5rem, $fontColor, "Roboto");
+  padding-top: 2%;
 }
 
 .board {
@@ -27,68 +28,4 @@
   position: absolute;
   top: -5px;
   left: -5px;
-}
-
-aside {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  .scores {
-    @include boardDesign(200px, $height / 2);
-    margin: 3px;
-  }
-  .chat {
-    position: relative;
-    @include boardDesign(200px, $height / 2);
-    margin: 3px;
-    form {
-      margin: 0 auto;
-      position: absolute;
-      bottom: 10px;
-      left: 10px;
-      input {
-        background-color: $bgColor;
-        width: 70%;
-        height: 3vh;
-        color: lighten($bgColor, 50%);
-        border: 1px solid lighten($bgColor, 50%);
-        border-radius: 3px;
-      }
-      button {
-        width: 20%;
-        height: 3vh;
-        background-color: $bgColor;
-        border: 1px solid lighten($bgColor, 50%);
-        color: lighten($bgColor, 50%);
-        border-radius: 3px;
-      }
-    }
-  }
-}
-
-ol {
-  margin: 2vw;
-  li {
-    font-size: 1.1rem;
-    &:nth-child(1) {
-      color: $FirstPlayer;
-    }
-    &:nth-child(2) {
-      color: $SecondPlayer;
-    }
-    &:nth-child(3) {
-      color: $ThirdPlayer;
-    }
-    &:nth-child(4) {
-      color: $FourthPlayer;
-    }
-    span {
-      width: 100%;
-      display: block;
-      & + span {
-        text-align: center;
-      }
-    }
-  }
 }

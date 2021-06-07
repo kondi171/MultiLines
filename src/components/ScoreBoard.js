@@ -5,11 +5,15 @@ class ScoreBoard extends Component {
     constructor(props){
       super(props);
       this.state = {
-        best: null,
+        first: null,
+        second: null,
+        third: null,
+        fourth: null,
       }
     }
     render(){
       return (
+        <>
         <section className="scores">
           <h2>Scores</h2>
           <ol>
@@ -30,7 +34,9 @@ class ScoreBoard extends Component {
               <span>255</span>
             </li>
           </ol>
+          <h2>round 2</h2>
         </section>
+        </>
       );
     }
 };
