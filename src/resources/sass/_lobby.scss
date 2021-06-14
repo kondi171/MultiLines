@@ -63,11 +63,53 @@
     @include boardDesign($width, $height);
     margin: 2% auto;
     position: relative;
+    background-color: lighten($boardColor, 2%);
+    opacity: 0.9;
     div {
       text-align: center;
       color: $fontColor;
-      font-size: 24px;
+      font-size: 3rem;
       padding: 12px;
+      margin: 20px;
+      &.disabled {
+        @include disable;
+      }
+    }
+  }
+}
+ol.lobbyLocalPlayerList {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  text-align: center;
+  margin: 0 !important;
+  padding: 0;
+  li {
+    padding: 10px;
+    width: 30%;
+    margin: 10px auto;
+    border-radius: 10px;
+    transition: 0.2s;
+    &.redPlayerActive {
+      color: $boardColor;
+      background-color: $firstPlayer;
+      box-shadow: 5px 5px 10px 5px darken($firstPlayer, 10%);
+    }
+    &.greenPlayerActive {
+      color: $boardColor;
+      background-color: $secondPlayer;
+      box-shadow: 5px 5px 10px 5px darken($secondPlayer, 10%);
+    }
+    &.bluePlayerActive {
+      color: $boardColor;
+      background-color: $thirdPlayer;
+      box-shadow: 5px 5px 10px 5px darken($thirdPlayer, 10%);
+    }
+    &.yellowPlayerActive {
+      color: $boardColor;
+      background-color: $fourthPlayer;
+      box-shadow: 5px 5px 10px 5px darken($fourthPlayer, 10%);
     }
   }
 }

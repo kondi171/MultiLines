@@ -5,55 +5,52 @@ class Lobby extends Component {
     state = {
         localPlayers: 1, 
     }
+    
     handleStartLocal = () => {
 
     }
 
-    handleStartMulti = () => {
-
-    }
-
     handleLocalLobby = () => {
+        const removeStyles = () => {
+            redPlayer.classList.remove('redPlayerActive');
+            greenPlayer.classList.remove('greenPlayerActive');
+            bluePlayer.classList.remove('bluePlayerActive');
+            yellowPlayer.classList.remove('yellowPlayerActive');
+        }
 
-        // this.input = document.getElementById('localInput');
-        // this.ol = document.getElementById('orderedList');
-        // this.li1 = document.getElementsByClassName('li1');
-        // this.li2 = document.getElementsByClassName('li2');
-        // this.li3 = document.getElementsByClassName('li3');
-        // this.li4 = document.getElementsByClassName('li4');
-
-        // this.li1.textContent = "First Player";
-        // if(this.input.value == 1) {
-        //     this.li1.textContent = 'First Player';
-        //     this.li2.textContent = '';
-        //     this.li3.textContent = '';
-        //     this.li4.textContent = '';
-        // }
-        // if(this.input.value == 2) {
-        //     console.log(2);
-        //     this.li1.textContent = 'First Player';
-        //     this.li2.textContent = 'Second Player';
-        //     this.li3.textContent = '';
-        //     this.li4.textContent = '';
-        // }
-        // if(this.input.value == 3) {
-        //     console.log(3);
-        //     this.li1.textContent = 'First Player';
-        //     this.li2.textContent = 'Second Player';
-        //     this.li3.textContent = 'ThirdPlayer';
-        //     this.li4.textContent = '';
-        // }
-        // if(this.input.value == 4) {
-        //     console.log(4);
-        //     this.li1.textContent = 'First Player';
-        //     this.li2.textContent = 'Second Player';
-        //     this.li3.textContent = 'ThirdPlayer';
-        //     this.li4.textContent = 'SecondPlayer';
-        // }
+        const input = document.getElementById('localInput');
+        const redPlayer = document.querySelector('li:nth-of-type(1)');
+        const greenPlayer = document.querySelector('li:nth-of-type(2)');
+        const bluePlayer = document.querySelector('li:nth-of-type(3)');
+        const yellowPlayer = document.querySelector('li:nth-of-type(4)');
+        if(input.value === 1) {
+            removeStyles();
+            redPlayer.classList.add('redPlayerActive');
+        }
+        if(input.value === 2) {
+            removeStyles();
+            redPlayer.classList.add('redPlayerActive');
+            greenPlayer.classList.add('greenPlayerActive');
+        }
+        if(input.value === 3) {
+            removeStyles();
+            redPlayer.classList.add('redPlayerActive');
+            greenPlayer.classList.add('greenPlayerActive');
+            bluePlayer.classList.add('bluePlayerActive');
+        }
+        if(input.value === 4) {
+            removeStyles();
+            redPlayer.classList.add('redPlayerActive');
+            greenPlayer.classList.add('greenPlayerActive');
+            bluePlayer.classList.add('bluePlayerActive');
+            yellowPlayer.classList.add('yellowPlayerActive');
+        }
 
         this.setState({
-            localPlayers: this.input.value,
+            localPlayers: input.value,
         });
+
+        
     }
 
     render(){
@@ -63,7 +60,9 @@ class Lobby extends Component {
                 <section className="multiGame">
                     <h2>MultiPlayer</h2>
                     <div>We waiting for players!</div>
-                    <button onClick={this.handleStartMulti}>
+                    <div className="disabled">In Development...</div>
+                    <div className="disabled">Available Soon!</div>
+                    <button disabled onClick={this.handleStartMulti}>
                         <span></span>
                         <span></span>
                         <span></span>
@@ -75,7 +74,7 @@ class Lobby extends Component {
                     <h2>Local Game</h2>
                     <div>How many players?</div>
                     <form>
-                        <input id='localInput' type="number" min="1" max="4" onChange={this.handleLocalLobby}/>
+                        <input id='localInput' value={this.state.localPlayers} type="number" min="1" max="4" onChange={this.handleLocalLobby}/>
                         <button onClick={this.handleStartLocal}>
                             <span></span>
                             <span></span>
@@ -84,11 +83,11 @@ class Lobby extends Component {
                             Let's Play Local!
                         </button>
                     </form>
-                    <ol id="orderedList">
-                        <li className="li1"></li>
-                        <li className="li2"></li>
-                        <li className="li3"></li>
-                        <li className="li4"></li>
+                    <ol className="lobbyLocalPlayerList" id="playersList">
+                        <li className="redPlayerActive">RedPlayer</li>
+                        <li>GreenPlayer</li>
+                        <li>BluePlayer</li>
+                        <li>YellowPlayer</li>
                     </ol>
                 </section>
             </div>

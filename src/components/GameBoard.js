@@ -1,4 +1,5 @@
 import '../resources/sass/main.scss';
+//import Sound from 'react-sound';
 import { Component } from 'react';
 import Player from './Player';
 //import ScoreBoard from './ScoreBoard';
@@ -13,21 +14,40 @@ class GameBoard extends Component {
         timeToRestart: 6,
     }
 
-    startGame = () => {
+    handleStartGame = () => {
+       // console.log("round: " + this.state.round);
+       console.log("NumberOfPlayers: " + this.state.numberOfPlayers);
+       //console.log("PlayersInGame: " + this.playersInGame);
+        this.setState({
+            round: this.state.round + 1,
+        });
+        this.trainInfo = false;
         this.showInfo = false;
         this.movement = 5;
         clearInterval(this.restartInterval);
         this.setState({
-            timeToRestart: 6,
+            timeToRestart: 5,
         });
-        this.firstLineCoordinates = {};
-        this.secondLineCoordinates = {};
-        this.thirdLineCoordinates = {};
-        this.fourthLineCoordinates = {};
+        this.firstLineCoordinates = [{   x: 40, y: 40  }];
+        this.secondLineCoordinates = [{   x: width - 40, y: 40  }];
+        this.thirdLineCoordinates = [{   x: 40, y: height - 40  }];
+        this.fourthLineCoordinates = [{   x: width - 40, y: height - 40  }];
         this.firstStopCollision = false;
         this.secondStopCollision = false;
         this.thirdStopCollision = false;
         this.fourthStopCollision = false;
+        this.firstPlayerCollisionFocus = 0;
+        this.secondPlayerCollisionFocus = 0;
+        this.thirdPlayerCollisionFocus = 0;
+        this.fourthPlayerCollisionFocus = 0;
+        clearInterval(this.firstPlayerMoveInterval);
+        clearInterval(this.firstPlayerPointsInterval);
+        clearInterval(this.secondPlayerMoveInterval);
+        clearInterval(this.secondPlayerPointsInterval);
+        clearInterval(this.thirdPlayerMoveInterval);
+        clearInterval(this.thirdPlayerPointsInterval);
+        clearInterval(this.fourthPlayerMoveInterval);
+        clearInterval(this.fourthPlayerPointsInterval);
         for(let i = 0; i < this.canvas.length; i++){
             this.canvas[i].width = width;
             this.canvas[i].height = height;
@@ -40,6 +60,7 @@ class GameBoard extends Component {
         this.handleInitializePlayers(this.state.numberOfPlayers);
     }
     componentDidMount() {
+        this.playersInGame = this.state.numberOfPlayers;
         if(this.props.start){
             this.canvas = [
                 document.querySelector('.redPlayer'),
@@ -53,7 +74,8 @@ class GameBoard extends Component {
             this.secondPlayerPoints = 0;
             this.thirdPlayerPoints = 0;
             this.fourthPlayerPoints = 0;
-            this.startGame();
+            this.handleStartGame();
+            this.handleInitializeSamples();
         }  
     }
 
@@ -63,36 +85,45 @@ class GameBoard extends Component {
             else if(this.firstPlayerDirection === "left") this.xMoveFirst -= this.movement;
             else if(this.firstPlayerDirection === "down") this.yMoveFirst += this.movement;
             else if(this.firstPlayerDirection === "up") this.yMoveFirst -= this.movement;
-            this.firstLineCoordinates.push({x: this.xMoveFirst, y: this.yMoveFirst});
-            this.handleMovePlayer(this.ctx[0], this.xMoveFirst, this.yMoveFirst);
+            if(this.firstPlayerCanMove) {
+                this.firstLineCoordinates.push({x: this.xMoveFirst, y: this.yMoveFirst});
+                this.handleMovePlayer(this.ctx[0], this.xMoveFirst, this.yMoveFirst);
+            }
         }
         if(player === "second") {
             if(this.secondPlayerDirection === "right") this.xMoveSecond += this.movement;
             else if(this.secondPlayerDirection === "left") this.xMoveSecond -= this.movement;
             else if(this.secondPlayerDirection === "down") this.yMoveSecond += this.movement;
-            else if(this.secondPlayerDirection === "up") this.yMoveSecond -= this.movement;
-            this.secondLineCoordinates.push({x: this.xMoveSecond, y: this.yMoveSecond});
-            this.handleMovePlayer(this.ctx[1], this.xMoveSecond, this.yMoveSecond);
+            else if(this.secondPlayerDirection === "up") this.yMoveSecond -= this.movement;   
+            if(this.secondPlayerCanMove) {
+                this.secondLineCoordinates.push({x: this.xMoveSecond, y: this.yMoveSecond});
+                this.handleMovePlayer(this.ctx[1], this.xMoveSecond, this.yMoveSecond);
+            }
         }
         if(player === "third") {
             if(this.thirdPlayerDirection === "right") this.xMoveThird += this.movement;
             else if(this.thirdPlayerDirection === "left") this.xMoveThird -= this.movement;
             else if(this.thirdPlayerDirection === "down") this.yMoveThird += this.movement;
             else if(this.thirdPlayerDirection === "up") this.yMoveThird -= this.movement;
-            this.thirdLineCoordinates.push({x: this.xMoveThird, y: this.yMoveThird});
-            this.handleMovePlayer(this.ctx[2], this.xMoveThird, this.yMoveThird);
+            if(this.thirdPlayerCanMove) {
+                this.thirdLineCoordinates.push({x: this.xMoveThird, y: this.yMoveThird});
+                this.handleMovePlayer(this.ctx[2], this.xMoveThird, this.yMoveThird);
+            }
         }
         if(player === "fourth") {
-            console.log(this.xMoveFourth);
             if(this.fourthPlayerDirection === "right") this.xMoveFourth += this.movement;
             else if(this.fourthPlayerDirection === "left") this.xMoveFourth -= this.movement;
             else if(this.fourthPlayerDirection === "down") this.yMoveFourth += this.movement;
             else if(this.fourthPlayerDirection === "up") this.yMoveFourth -= this.movement;
-            this.fourthLineCoordinates.push({x: this.xMoveFourth, y: this.yMoveFourth});
-            this.handleMovePlayer(this.ctx[3], this.xMoveFourth, this.yMoveFourth);
+            if(this.fourthPlayerCanMove) {
+                this.fourthLineCoordinates.push({x: this.xMoveFourth, y: this.yMoveFourth});
+                this.handleMovePlayer(this.ctx[3], this.xMoveFourth, this.yMoveFourth);
+            }
         }
     }
-
+    handleInitializeSamples = () => {
+        
+    }
     handleInitializePlayers(numberOfPlayers) {
         for(let i = 0; i < numberOfPlayers; i++){
             this.ctx[i].beginPath();
@@ -161,10 +192,6 @@ class GameBoard extends Component {
         }
     }
 
-    componentDidUpdate() {
-    
-    }
-
     handleKeyListener = () => {
         document.addEventListener('keydown', (e) => {
             if(this.firstPlayerCanMove){
@@ -217,23 +244,30 @@ class GameBoard extends Component {
     handleMovePlayer = (player,x,y) => {
         player.lineTo(x,y);
         player.stroke();
-        if(!this.firstStopCollision) this.handleDetectCollision("first");    
+        if(!this.firstStopCollision) this.handleDetectCollision("first");  
         if(!this.secondStopCollision) this.handleDetectCollision("second");    
         if(!this.thirdStopCollision) this.handleDetectCollision("third");    
         if(!this.fourthStopCollision) this.handleDetectCollision("fourth");    
     };
 
     handleDetectCollision = player => {
-     //   this.handleCollisionWithPlayers();
+        this.handleCollisionWithPlayers(player);
         this.handleCollisionWithOwn(player);
-       // this.handleCollisionWithWalls(player);
+        //this.handleCollisionWithWalls(player);
     };
 
     handleCollisionHappened = player => {
+     //   console.log(this.state.numberOfPlayers);
+    //  const playerImpact = new Audio("../resources/sounds/playerImpact.wav");
+    //     playerImpact.play();
+        if(this.firstPlayerCollisionFocus === 1 || this.secondPlayerCollisionFocus === 1 || this.thirdPlayerCollisionFocus === 1 || this.fourthPlayerCollisionFocus === 1){
+            this.setState({
+                numberOfPlayers: this.state.numberOfPlayers - 1
+            });
+        }
         this.setState({
-            numberOfPlayers: this.state.numberOfPlayers - 1,
-        })
-        console.log(this.state.numberOfPlayers);
+            numberOfPlayers: this.state.numberOfPlayers - 1
+        });
         if(player === "first") {
             clearInterval(this.firstPlayerMoveInterval);
             clearInterval(this.firstPlayerPointsInterval);
@@ -258,55 +292,117 @@ class GameBoard extends Component {
             this.fourthPlayerCanMove = false;
             this.fourthStopCollision = true;
         }
-        if(this.state.numberOfPlayers <= 1) {
+        if(this.state.numberOfPlayers === 1) {
             this.handleReset();
         }
     };
 
-    handleCollisionWithPlayers = () => {
+    handleCollisionWithPlayers = player => {
         // First Version - Correct first stack of searching array.
-        for(let i = 0; i < this.firstLineCoordinates.length; i++){
+        if(player === "first") {
+            for(let i = 0; i < this.firstLineCoordinates.length; i++){
+                if(i >= this.secondLineCoordinates.length) break;
+                else {
+                    if((this.firstLineCoordinates[this.firstLineCoordinates.length - 1].x === this.secondLineCoordinates[i].x) && (this.firstLineCoordinates[this.firstLineCoordinates.length - 1].y === this.secondLineCoordinates[i].y)){
+                        this.handleCollisionHappened(player);
+                    }
+                }         
+            } 
+            for(let i = 0; i < this.firstLineCoordinates.length; i++){
+            if(i >= this.thirdLineCoordinates.length) break;
+                else {
+                    if((this.firstLineCoordinates[this.firstLineCoordinates.length - 1].x === this.thirdLineCoordinates[i].x) && (this.firstLineCoordinates[this.firstLineCoordinates.length - 1].y === this.thirdLineCoordinates[i].y)){
+                        this.handleCollisionHappened(player);
+                    }
+                }  
+            }
+            for(let i = 0; i < this.firstLineCoordinates.length; i++){
+                if(i >= this.fourthLineCoordinates.length) break;
+                else {
+                    if((this.firstLineCoordinates[this.firstLineCoordinates.length - 1].x === this.fourthLineCoordinates[i].x) && (this.firstLineCoordinates[this.firstLineCoordinates.length - 1].y === this.fourthLineCoordinates[i].y)){
+                        this.handleCollisionHappened(player);
+                    }
+                }  
+            }
+        }
+        if(player === "second") {
+            for(let i = 0; i < this.secondLineCoordinates.length; i++){
+                if(i >= this.firstLineCoordinates.length) break;
+                else {
+                    if((this.secondLineCoordinates[this.secondLineCoordinates.length - 1].x === this.firstLineCoordinates[i].x) && (this.secondLineCoordinates[this.secondLineCoordinates.length - 1].y === this.firstLineCoordinates[i].y)){
+                        this.handleCollisionHappened(player);
+                    }
+                }         
+            } 
+            for(let i = 0; i < this.secondLineCoordinates.length; i++){
+            if(i >= this.thirdLineCoordinates.length) break;
+                else {
+                    if((this.secondLineCoordinates[this.secondLineCoordinates.length - 1].x === this.thirdLineCoordinates[i].x) && (this.secondLineCoordinates[this.secondLineCoordinates.length - 1].y === this.thirdLineCoordinates[i].y)){
+                        this.handleCollisionHappened(player);
+                    }
+                }  
+            }
+            for(let i = 0; i < this.secondLineCoordinates.length; i++){
+                if(i >= this.fourthLineCoordinates.length) break;
+                else {
+                    if((this.secondLineCoordinates[this.secondLineCoordinates.length - 1].x === this.fourthLineCoordinates[i].x) && (this.secondLineCoordinates[this.secondLineCoordinates.length - 1].y === this.fourthLineCoordinates[i].y)){
+                        this.handleCollisionHappened(player);
+                    }
+                }  
+            }
+        }
+        if(player === "third") {
+            for(let i = 0; i < this.thirdLineCoordinates.length; i++){
+                if(i >= this.firstLineCoordinates.length) break;
+                else {
+                    if((this.thirdLineCoordinates[this.thirdLineCoordinates.length - 1].x === this.firstLineCoordinates[i].x) && (this.thirdLineCoordinates[this.thirdLineCoordinates.length - 1].y === this.firstLineCoordinates[i].y)){
+                        this.handleCollisionHappened(player);
+                    }
+                }         
+            } 
+            for(let i = 0; i < this.thirdLineCoordinates.length; i++){
             if(i >= this.secondLineCoordinates.length) break;
-            else {
-                if((this.firstLineCoordinates[this.firstLineCoordinates.length - 1].x === this.secondLineCoordinates[i].x) && (this.firstLineCoordinates[this.firstLineCoordinates.length - 1].y === this.secondLineCoordinates[i].y)){
-                    console.log("Player Collision 1-st player with 2-nd player"); 
-                }
-            }         
+                else {
+                    if((this.thirdLineCoordinates[this.thirdLineCoordinates.length - 1].x === this.secondLineCoordinates[i].x) && (this.thirdLineCoordinates[this.thirdLineCoordinates.length - 1].y === this.secondLineCoordinates[i].y)){
+                        this.handleCollisionHappened(player);
+                    }
+                }  
+            }
+            for(let i = 0; i < this.thirdLineCoordinates.length; i++){
+                if(i >= this.fourthLineCoordinates.length) break;
+                else {
+                    if((this.thirdLineCoordinates[this.thirdLineCoordinates.length - 1].x === this.fourthLineCoordinates[i].x) && (this.thirdLineCoordinates[this.thirdLineCoordinates.length - 1].y === this.fourthLineCoordinates[i].y)){
+                        this.handleCollisionHappened(player);
+                    }
+                }  
+            }   
         }
-        for(let i = 0; i < this.firstLineCoordinates.length; i++){
-           if(i >= this.thirdLineCoordinates.length) break;
-            else {
-                if((this.firstLineCoordinates[this.firstLineCoordinates.length - 1].x === this.thirdLineCoordinates[i].x) && (this.firstLineCoordinates[this.firstLineCoordinates.length - 1].y === this.thirdLineCoordinates[i].y)){
-                    console.log("Player Collision 1-st player with 3-rd player");
-                }
-            }  
+        if(player === "fourth") {
+            for(let i = 0; i < this.fourthLineCoordinates.length; i++){
+                if(i >= this.secondLineCoordinates.length) break;
+                else {
+                    if((this.fourthLineCoordinates[this.fourthLineCoordinates.length - 1].x === this.secondLineCoordinates[i].x) && (this.fourthLineCoordinates[this.fourthLineCoordinates.length - 1].y === this.secondLineCoordinates[i].y)){
+                        this.handleCollisionHappened(player);
+                    }
+                }         
+            } 
+            for(let i = 0; i < this.fourthLineCoordinates.length; i++){
+            if(i >= this.thirdLineCoordinates.length) break;
+                else {
+                    if((this.fourthLineCoordinates[this.fourthLineCoordinates.length - 1].x === this.thirdLineCoordinates[i].x) && (this.fourthLineCoordinates[this.fourthLineCoordinates.length - 1].y === this.thirdLineCoordinates[i].y)){
+                        this.handleCollisionHappened(player);
+                    }
+                }  
+            }
+            for(let i = 0; i < this.fourthLineCoordinates.length; i++){
+                if(i >= this.firstLineCoordinates.length) break;
+                else {
+                    if((this.fourthLineCoordinates[this.fourthLineCoordinates.length - 1].x === this.firstLineCoordinates[i].x) && (this.fourthLineCoordinates[this.fourthLineCoordinates.length - 1].y === this.firstLineCoordinates[i].y)){
+                        this.handleCollisionHappened(player);
+                    }
+                }  
+            }
         }
-        for(let i = 0; i < this.firstLineCoordinates.length; i++){
-            if(i >= this.fourthLineCoordinates.length) break;
-             else {
-                 if((this.firstLineCoordinates[this.firstLineCoordinates.length - 1].x === this.fourthLineCoordinates[i].x) && (this.firstLineCoordinates[this.firstLineCoordinates.length - 1].y === this.fourthLineCoordinates[i].y)){
-                     console.log("Player Collision 1-st player with 4-th player");
-                 }
-             }  
-         }
-         // Second Version - better but doesn't work :(   
-
-        // for(let i = 0; i < firstLineCoordinates.length; i++){
-        //     if(i >= secondLineCoordinates.length) break;
-        //     else if(i >= thirdLineCoordinates.length) break;
-        //     else if(i >= fourthLineCoordinates.length) break;
-        //     else {
-        //         if((firstLineCoordinates[firstLineCoordinates.length - 1].xMoveFirst === secondLineCoordinates[i].xMoveSecond) && (firstLineCoordinates[firstLineCoordinates.length - 1].yMoveFirst === secondLineCoordinates[i].yMoveSecond)){
-        //             console.log("Player Collision 1-st player with 2-nd player"); 
-        //         }
-        //         if((firstLineCoordinates[firstLineCoordinates.length - 1].xMoveFirst === thirdLineCoordinates[i].xMoveThird) && (firstLineCoordinates[firstLineCoordinates.length - 1].yMoveFirst === thirdLineCoordinates[i].yMoveThird)){
-        //             console.log("Player Collision 1-st player with 3-rd player");
-        //         }
-        //         if((firstLineCoordinates[firstLineCoordinates.length - 1].xMoveFirst === fourthLineCoordinates[i].xMoveFourth) && (firstLineCoordinates[firstLineCoordinates.length - 1].yMoveFirst === fourthLineCoordinates[i].yMoveFourth)){
-        //             console.log("Player Collision 1-st player with 4-th player");
-        //         }
-        //     }         
-        // } 
     };
 
     handleCollisionWithOwn = player => {
@@ -315,6 +411,7 @@ class GameBoard extends Component {
                 if(i === 0) continue;
                 else if((this.firstLineCoordinates[this.firstLineCoordinates.length - 1].x === this.firstLineCoordinates[i - 1].x) && (this.firstLineCoordinates[this.firstLineCoordinates.length - 1].y === this.firstLineCoordinates[i - 1].y)){
                     this.handleCollisionHappened(player);
+                    console.log("collision");
                 }
             }
         }
@@ -323,6 +420,7 @@ class GameBoard extends Component {
                 if(i === 0) continue;
                 else if((this.secondLineCoordinates[this.secondLineCoordinates.length - 1].x === this.secondLineCoordinates[i - 1].x) && (this.secondLineCoordinates[this.secondLineCoordinates.length - 1].y === this.secondLineCoordinates[i - 1].y)){
                     this.handleCollisionHappened(player);
+                    console.log("collision");
                 }
             }
         }
@@ -349,6 +447,7 @@ class GameBoard extends Component {
             for(let i = 0; i < this.firstLineCoordinates.length; i++){
                 if((this.firstLineCoordinates[this.firstLineCoordinates.length - 1].x >= width) || (this.firstLineCoordinates[this.firstLineCoordinates.length - 1].y >= height) || (this.firstLineCoordinates[this.firstLineCoordinates.length - 1].x <= 0) || (this.firstLineCoordinates[this.firstLineCoordinates.length - 1].y <= 0) ){
                     this.handleCollisionHappened(player);
+                    this.firstPlayerCollisionFocus++;
                 }
             }
         }
@@ -356,6 +455,7 @@ class GameBoard extends Component {
             for(let i = 0; i < this.secondLineCoordinates.length; i++){
                 if((this.secondLineCoordinates[this.secondLineCoordinates.length - 1].x >= width) || (this.secondLineCoordinates[this.secondLineCoordinates.length - 1].y >= height) || (this.secondLineCoordinates[this.secondLineCoordinates.length - 1].x <= 0) || (this.secondLineCoordinates[this.secondLineCoordinates.length - 1].y <= 0) ){
                     this.handleCollisionHappened(player);
+                    this.secondPlayerCollisionFocus++;
                 }
             }
         }
@@ -363,6 +463,7 @@ class GameBoard extends Component {
             for(let i = 0; i < this.thirdLineCoordinates.length; i++){
                 if((this.thirdLineCoordinates[this.thirdLineCoordinates.length - 1].x >= width) || (this.thirdLineCoordinates[this.thirdLineCoordinates.length - 1].y >= height) || (this.thirdLineCoordinates[this.thirdLineCoordinates.length - 1].x <= 0) || (this.thirdLineCoordinates[this.thirdLineCoordinates.length - 1].y <= 0) ){
                     this.handleCollisionHappened(player);
+                    this.thirdPlayerCollisionFocus++;
                 }
             }
         }
@@ -370,6 +471,7 @@ class GameBoard extends Component {
             for(let i = 0; i < this.fourthLineCoordinates.length; i++){
                 if((this.fourthLineCoordinates[this.fourthLineCoordinates.length - 1].x >= width) || (this.fourthLineCoordinates[this.fourthLineCoordinates.length - 1].y >= height) || (this.fourthLineCoordinates[this.fourthLineCoordinates.length - 1].x <= 0) || (this.fourthLineCoordinates[this.fourthLineCoordinates.length - 1].y <= 0) ){
                     this.handleCollisionHappened(player);
+                    this.fourthPlayerCollisionFocus++;
                 }
             }
         }
@@ -377,12 +479,12 @@ class GameBoard extends Component {
 
     handleReset = () => {
         this.showInfo = true;
-        this.restartInterval = setInterval(()=>{
+        this.restartInterval = setInterval(() => {
             if(this.state.timeToRestart === 0) {
-                this.startGame();
-                this.setState({
-                    round: this.state.round + 1,
-                });
+                if(this.state.round <= 5) this.handleStartGame();
+                else {
+                    //here back to lobby!
+                }
             }
             else {
                 this.movement = 1;
@@ -391,10 +493,28 @@ class GameBoard extends Component {
                 });
             }
         },1000);
-        if(!this.firstStopCollision)this.winner = 'red';
-        if(!this.secondStopCollision)this.winner = 'green';
-        if(!this.thirdStopCollision)this.winner = 'blue';
-        if(!this.fourthStopCollision)this.winner = 'yellow';
+        if(this.playersInGame === 1) {
+            if(!this.firstStopCollision) {
+                this.trainInfo = true;
+                this.winner = 'red';
+            }
+            console.log('do');
+        }
+        else if(this.playersInGame === 2){
+            if(!this.firstStopCollision) this.winner = 'red';
+            if(!this.secondStopCollision) this.winner = 'green';
+        }
+        else if(this.playersInGame === 3) {
+            if(!this.firstStopCollision) this.winner = 'red';
+            if(!this.secondStopCollision) this.winner = 'green';
+            if(!this.thirdStopCollision) this.winner = 'blue'
+        } 
+        else if(this.playersInGame === 4){    
+            if(!this.secondStopCollision) this.winner = 'green'
+            if(!this.thirdStopCollision) this.winner = 'blue';
+            if(!this.fourthStopCollision) this.winner = 'yellow';
+            if(!this.firstStopCollision) this.winner = 'red';
+        }
     }
     render() {
         return (
@@ -404,7 +524,12 @@ class GameBoard extends Component {
                     <span className={this.winner}>{this.showInfo ? `We have a winner on this round!` : ""}</span>
                     <span>{this.showInfo ? `Time to restart: ${this.state.timeToRestart}` : ``}</span>
                 </div>
+                {/* <div>
+                    <span className={this.winner}>{this.trainInfo ? `Train More to defeat your opponents` : ""}</span>
+                    <span>{this.showInfo ? `Time to restart: ${this.state.timeToRestart}` : ``}</span>
+                </div> */}
             </div>
+            {/* <Sound url="../resources/sounds/playerImpact.wav" playStatus={Sound.status.PLAYING} /> */}
             <Player name="redPlayer"/>
             <Player name="greenPlayer"/>
             <Player name="bluePlayer"/>
