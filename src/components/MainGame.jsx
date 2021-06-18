@@ -12,23 +12,11 @@ class MainGame extends Component {
   componentWillUnmount(){
     clearInterval(this.tipsInterval);
   }
-
   handleStartLocal = (e) => {
     e.preventDefault();
     this.setState({
       gameState: true
     });
-  }
-  componentDidMount() {
-
-  }
-
-  componentDidUpdate() {
-    
-  }
- 
-  handleTips = () => {
-    
   }
   handleLocalLobby = () => {
     const removeStyles = () => {
@@ -64,7 +52,6 @@ class MainGame extends Component {
         bluePlayer.classList.add('bluePlayerActive');
         yellowPlayer.classList.add('yellowPlayerActive');
     }
-
     this.setState({
         numberOfPlayers: input.value,
     });

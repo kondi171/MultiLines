@@ -5,7 +5,6 @@ class ChatBoard extends Component {
   state = {
     local: true,
   }
-
   render() {
     return (
       <section className="chat">  
@@ -19,5 +18,4 @@ class ChatBoard extends Component {
     );
   }
 }
-  
 export default ChatBoard;

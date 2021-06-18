@@ -7,7 +7,7 @@ import Player from './Player';
 const width = 840;
 const height = 620;
 
-class GameBoard extends Component {
+class GameState extends Component {
   state = {
     numberOfPlayers: this.props.numberOfPlayers,
     round: 0,
@@ -257,7 +257,7 @@ class GameBoard extends Component {
       this.handleCollisionWithPlayers(player);
       this.handleCollisionWithOwn(player);
       this.handleCollisionWithWalls(player);
-  };ss
+  };
 
   handleWallsCollisionException = player => {
     if(this.firstPlayerCollisionFocus === 1 || this.secondPlayerCollisionFocus === 1 || this.thirdPlayerCollisionFocus === 1 || this.fourthPlayerCollisionFocus === 1){
@@ -269,7 +269,6 @@ class GameBoard extends Component {
       }
     }
     this.handleCollisionHappened(player);
-    console.log("WallCollision: " + this.state.numberOfPlayers);
   }
 
   handleOtherCollisionException = player => {
@@ -418,7 +417,7 @@ class GameBoard extends Component {
               }  
           }
       }
-  };
+  }
 
   handleCollisionWithOwn = player => {
       if(player === "first") {
@@ -453,7 +452,7 @@ class GameBoard extends Component {
               }
           } 
       }
-  };
+  }
 
   handleCollisionWithWalls = player => {
       if(player === "first") {
@@ -488,24 +487,28 @@ class GameBoard extends Component {
               }
           }
       }
-  };
+  }
 
   handleReset = () => {
       this.showInfo = true;
       this.restartInterval = setInterval(() => {
           if(this.state.timeToRestart === 0) {
-              if(this.state.round < 5) {
+              if(this.state.round < 3) {
                   this.handleStartGame();
               }
               else {
                 this.showInfo = false;
                 this.setState({
                   end: true,
-                });      
-                  this.handleResetMoveInterval();
-                  setInterval(() => {
+                });
+                if((this.firstPlayerPoints >= this.secondPlayerPoints) && (this.firstPlayerPoints >= this.thirdPlayerPoints) && (this.firstPlayerPoints >= this.fourthPlayerPoints)) this.absoluteWinner = 'Red';      
+                if((this.secondPlayerPoints >= this.firstPlayerPoints) && (this.secondPlayerPoints >= this.thirdPlayerPoints) && (this.secondPlayerPoints >= this.fourthPlayerPoints)) this.absoluteWinner = 'Green';      
+                if((this.thirdPlayerPoints >= this.secondPlayerPoints) && (this.thirdPlayerPoints >= this.firstPlayerPoints) && (this.thirdPlayerPoints >= this.fourthPlayerPoints)) this.absoluteWinner = 'Blue';      
+                if((this.fourthPlayerPoints >= this.secondPlayerPoints) && (this.fourthPlayerPoints >= this.thirdPlayerPoints) && (this.fourthPlayerPoints >= this.firstPlayerPoints)) this.absoluteWinner = 'Yellow';      
+                this.handleResetMoveInterval();
+                setInterval(() => {
                     window.location.reload();
-                  },3000);
+                },3000);
                 
               }
           }
@@ -553,7 +556,7 @@ class GameBoard extends Component {
                       </div>
                       <div>
                           <span>{this.state.end ? `We have a Winner! Congratulations!` : ""}</span>
-                          <span className={this.winner}>{this.state.end ? `The winner is ${this.winner} player!` : ""}</span>
+                          <span className={this.absoluteWinner}>{this.state.end ? `The winner is ${this.absoluteWinner} player!` : ""}</span>
                       </div>
                   </div>
                   <Player name="redPlayer"/>
@@ -565,4 +568,4 @@ class GameBoard extends Component {
       );
   } 
 }
-export default GameBoard;
+export default GameState;
