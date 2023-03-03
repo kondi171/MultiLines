@@ -1,0 +1,10 @@
+%board {
+  background-color: $boardColor;
+  width: calc(100% / 2 - 10%);
+  height: 70vh;
+  border: 3px solid lighten($bgColor, 50%);
+  margin: 0 auto;
+  border-radius: 5px;
+  box-shadow: 5px 5px 16px 5px $boardColor;
+  margin: 2% auto;
+}

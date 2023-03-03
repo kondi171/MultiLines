@@ -1,0 +1,17 @@
+@import 'variables';
+@import 'mixins';
+@import 'placeholders';
+@import 'lobby';
+@import url('https://fonts.googleapis.com/css2?family=Alegreya:wght@400;700&family=Rampart+One&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $textFont;
+  background-color: $bgColor;
+  background-image: url("../img/black.png");
+}
